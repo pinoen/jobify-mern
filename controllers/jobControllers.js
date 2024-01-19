@@ -20,6 +20,7 @@ let jobs = [
 ]
 
 export const getAllJobs = async (req, res) => {
+  const jobs = await Job.find({})
   res.status(200).json({
     status: 'success',
     results: jobs.length,
@@ -42,7 +43,7 @@ export const createJob = async (req, res) => {
 
 export const getJob = async (req, res) => {
   const id = req.params.id;
-  const foundJob = jobs.find((job) => job.id === id);
+  const foundJob = await Job.findById(id)
 
   if (!foundJob) {
     return res.status(404).json({
