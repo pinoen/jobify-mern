@@ -1,7 +1,15 @@
+import * as dotenv from 'dotenv';
+dotenv.config();
 import express from 'express';
 const app = express();
+import morgan from 'morgan';
+
+if (process.env.NODE_ENV === 'development') {
+  app.use(morgan('dev'));
+}
 
 app.use(express.json());
+app.use(morgan('dev'));
 
 app.get('/', (req, res) => {
   res.send('Hello World!');
@@ -15,6 +23,8 @@ app.post('/', (req, res) => {
   });
 })
 
-app.listen(3000, () => {
-  console.log('Server started on port 3000');
+const port = process.env.PORT || 3000;
+
+app.listen(port, () => {
+  console.log(`Server started on port ${port}`);
 });
