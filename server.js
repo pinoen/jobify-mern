@@ -138,6 +138,20 @@ app.delete('/api/v1/jobs/:id', (req, res) => {
   })
 })
 
+app.use("*", (req, res) => {
+  res.status(404).json({
+    status: 'fail',
+    message: `Can't find ${req.originalUrl} on this server!`
+  })
+})
+
+app.use((error, req, res, next) => {
+  res.status(500).json({
+    status: 'error',
+    message: error.message
+  })
+})
+
 const port = process.env.PORT || 3000;
 
 app.listen(port, () => {
