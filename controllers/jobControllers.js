@@ -61,46 +61,25 @@ export const getJob = async (req, res) => {
 }
 
 export const updateJob = async (req, res) => {
-  const id = req.params.id;
-  const { company, position } = req.body;
-  const job = jobs.find((job) => job.id === id);
+  const { id } = req.params;
 
-  if (!job) {
-    return res.status(404).json({
-      status: 'fail',
-      message: `no job with id: ${id}`
-    })
+  const updatedJob = await Job.findByIdAndUpdate(id, req.body, {
+    new: true,
+  });
+
+  if (!updatedJob) {
+    return res.status(404).json({ msg: `no job with id ${id}` });
   }
 
-  if (!company || !position) {
-    return res.status(400).json({ message: 'Please provide company and position' })
-  }
-
-  job.company = company;
-  job.position = position;
-  res.status(200).json({
-    status: 'success',
-    data: {
-      job
-    }
-  })
+  res.status(200).json({ job: updatedJob });
 }
 
 export const deleteJob = async (req, res) => {
-  const id = req.params.id;
-  const job = jobs.find((job) => job.id === id);
+  const { id } = req.params;
+  const removedJob = await Job.findByIdAndDelete(id);
 
-  if (!job) {
-    return res.status(404).json({
-      status: 'fail',
-      message: `no job with id: ${id}`
-    })
+  if (!removedJob) {
+    return res.status(404).json({ msg: `no job with id ${id}` });
   }
-
-  const index = jobs.indexOf(job);
-  jobs.splice(index, 1);
-  res.status(200).json({
-    status: 'success',
-    data: null
-  })
+  res.status(200).json({ job: removedJob });
 }
