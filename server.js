@@ -9,6 +9,9 @@ import mongoose from 'mongoose';
 // routes
 import jobRouter from './routes/jobRouter.js';
 
+// middlewares
+import errorHandler from './middleware/errorHandler.js';
+
 if (process.env.NODE_ENV === 'development') {
   app.use(morgan('dev'));
 }
@@ -37,12 +40,7 @@ app.use("*", (req, res) => {
   })
 })
 
-app.use((error, req, res, next) => {
-  res.status(500).json({
-    status: 'error',
-    message: error.message
-  })
-})
+app.use(errorHandler)
 
 const port = process.env.PORT || 3000;
 
