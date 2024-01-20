@@ -11,7 +11,6 @@ import jobRouter from './routes/jobRouter.js';
 
 // middlewares
 import errorHandler from './middleware/errorHandler.js';
-import { validateTest } from './middleware/validation.js';
 
 if (process.env.NODE_ENV === 'development') {
   app.use(morgan('dev'));
@@ -23,11 +22,6 @@ app.use(morgan('dev'));
 app.get('/', (req, res) => {
   res.send('Hello World!');
 });
-
-app.post('/api/v1/test', validateTest, (req, res) => {
-  const { name } = req.body
-  res.json({ message: `hello ${name}` });
-})
 
 app.use('/api/v1/jobs', jobRouter);
 
