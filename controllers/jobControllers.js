@@ -1,27 +1,10 @@
 import Job from '../models/jobModel.js';
-import { nanoid } from 'nanoid';
-
-let jobs = [
-  {
-    id: nanoid(),
-    company: 'Job 1',
-    position: 'Description 1'
-  },
-  {
-    id: nanoid(),
-    company: 'Job 2',
-    position: 'Description 2'
-  },
-  {
-    id: nanoid(),
-    company: 'Job 3',
-    position: 'Description 3'
-  }
-]
+import { StatusCodes } from 'http-status-codes';
+import { NotFoundError } from '../errors/customErrors.js';
 
 export const getAllJobs = async (req, res) => {
   const jobs = await Job.find({})
-  res.status(200).json({
+  res.status(StatusCodes.OK).json({
     status: 'success',
     results: jobs.length,
     data: {
@@ -33,7 +16,7 @@ export const getAllJobs = async (req, res) => {
 export const createJob = async (req, res) => {
   const newJob = await Job.create(req.body);
 
-  res.status(201).json({
+  res.status(StatusCodes.CREATED).json({
     status: 'success',
     data: {
       job: newJob
@@ -45,14 +28,9 @@ export const getJob = async (req, res) => {
   const id = req.params.id;
   const foundJob = await Job.findById(id)
 
-  if (!foundJob) {
-    return res.status(404).json({
-      status: 'fail',
-      message: `no job with id: ${id}`
-    })
-  }
+  if (!foundJob) throw new NotFoundError(`no job with id ${id}`)
 
-  res.status(200).json({
+  res.status(StatusCodes.OK).json({
     status: 'success',
     data: {
       job: foundJob
@@ -67,19 +45,16 @@ export const updateJob = async (req, res) => {
     new: true,
   });
 
-  if (!updatedJob) {
-    return res.status(404).json({ msg: `no job with id ${id}` });
-  }
+  if (!updatedJob) throw new NotFoundError(`no job with id ${id}`)
 
-  res.status(200).json({ job: updatedJob });
+  res.status(StatusCodes.OK).json({ job: updatedJob });
 }
 
 export const deleteJob = async (req, res) => {
   const { id } = req.params;
   const removedJob = await Job.findByIdAndDelete(id);
 
-  if (!removedJob) {
-    return res.status(404).json({ msg: `no job with id ${id}` });
-  }
-  res.status(200).json({ job: removedJob });
+  if (!removedJob) throw new NotFoundError(`no job with id ${id}`)
+
+  res.status(StatusCodes.OK).json({ job: removedJob });
 }
