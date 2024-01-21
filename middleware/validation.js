@@ -52,3 +52,8 @@ export const validateRegisterInput = withValidationErrors([
     }
   }),
 ])
+
+export const validateLoginInput = withValidationErrors([
+  body('password').notEmpty().withMessage('password is required'),
+  body('email').notEmpty().withMessage('email is required').isEmail().withMessage('invalid email format'),
+])
