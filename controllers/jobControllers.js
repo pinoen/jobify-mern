@@ -3,51 +3,25 @@ import { StatusCodes } from 'http-status-codes';
 
 export const getAllJobs = async (req, res) => {
   const jobs = await Job.find({})
-  res.status(StatusCodes.OK).json({
-    status: 'success',
-    results: jobs.length,
-    data: {
-      jobs
-    }
-  })
+  res.status(StatusCodes.OK).json({ jobs })
 }
 
 export const createJob = async (req, res) => {
   const newJob = await Job.create(req.body);
-
-  res.status(StatusCodes.CREATED).json({
-    status: 'success',
-    data: {
-      job: newJob
-    }
-  })
+  res.status(StatusCodes.CREATED).json({ newJob })
 }
 
 export const getJob = async (req, res) => {
-  const id = req.params.id;
-  const foundJob = await Job.findById(id)
-
-  res.status(StatusCodes.OK).json({
-    status: 'success',
-    data: {
-      job: foundJob
-    }
-  })
+  const foundJob = await Job.findById(req.params.id)
+  res.status(StatusCodes.OK).json({ foundJob })
 }
 
 export const updateJob = async (req, res) => {
-  const { id } = req.params;
-
-  const updatedJob = await Job.findByIdAndUpdate(id, req.body, {
-    new: true,
-  });
-
+  const updatedJob = await Job.findByIdAndUpdate(req.params.id, req.body, { new: true });
   res.status(StatusCodes.OK).json({ job: updatedJob });
 }
 
 export const deleteJob = async (req, res) => {
-  const { id } = req.params;
-  const removedJob = await Job.findByIdAndDelete(id);
-
+  const removedJob = await Job.findByIdAndDelete(req.params.id);
   res.status(StatusCodes.OK).json({ job: removedJob });
 }
