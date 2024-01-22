@@ -1,20 +1,29 @@
 /* eslint-disable react/prop-types */
 /* eslint-disable react-refresh/only-export-components */
-import { Outlet } from "react-router-dom"
+import { Outlet, redirect, useLoaderData } from "react-router-dom"
 import Wrapper from "../assets/wrappers/Dashboard"
 import { BigSideBar, SmallSideBar, NavBar } from "../components"
 import { createContext, useContext, useState } from "react"
 import { checkDefaultTheme } from "../App"
+import customFetch from "../utils/customFetch"
+
+export const loader = async () => {
+  try {
+    const { data } = await customFetch.get('users/current-user')
+    return data
+  } catch (error) {
+    return redirect('/')
+  }
+}
 
 const DashboardContext = createContext()
 
 const DashboardLayout = () => {
-  const user = {
-    name: 'Sara Smith',
-    avatar: 'https://images.unsplash.com/photo-1580489944761-15a19d654956?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1480&q=80'
-  }
+  const { user } = useLoaderData()
+
   const [showSidebar, setShowSidebar] = useState(false)
   const [isDarkMode, setIsDarkMode] = useState(checkDefaultTheme())
+
 
   const toggleIsDarkMode = () => {
     const newDarkMode = !isDarkMode
@@ -40,7 +49,7 @@ const DashboardLayout = () => {
           <div>
             <NavBar />
             <div className="dashboard-page">
-              <Outlet />
+              <Outlet context={user} />
             </div>
           </div>
         </main>
