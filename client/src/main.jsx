@@ -2,9 +2,9 @@ import React from 'react'
 import ReactDOM from 'react-dom/client'
 import App from './App.jsx'
 import './index.css'
-import axios from 'axios'
+import customFetch from './utils/customFetch.js'
 
-const response = await axios.get('/api/v1/test')
+const response = await customFetch.get('/test')
 console.log(response)
 
 ReactDOM.createRoot(document.getElementById('root')).render(
