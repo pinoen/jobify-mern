@@ -8,6 +8,7 @@ import { loader as allJobsLoader } from "./pages/AllJobs"
 import { loader as editJobLoader } from "./pages/EditJob"
 import { action as editJobAction } from "./pages/EditJob"
 import { action as deleteAction } from "./pages/DeleteJob"
+import { loader as adminLoader } from "./pages/Admin"
 
 export const checkDefaultTheme = () => {
   const isDarkMode = localStorage.getItem('isDarkMode') === 'true'
@@ -72,7 +73,8 @@ const router = createBrowserRouter([
           },
           {
             path: "admin",
-            element: <Admin />
+            element: <Admin />,
+            loader: adminLoader
           }
         ]
       }
