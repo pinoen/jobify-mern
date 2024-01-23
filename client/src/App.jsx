@@ -1,5 +1,5 @@
 import { RouterProvider, createBrowserRouter } from "react-router-dom"
-import { HomeLayout, Landing, Login, Register, Profile, AllJobs, AddJob, EditJob, DeleteJob, Stats, Admin, Error, DashboardLayout } from "./pages"
+import { HomeLayout, Landing, Login, Register, Profile, AllJobs, AddJob, EditJob, Stats, Admin, Error, DashboardLayout } from "./pages"
 import { action as registerAction } from "./pages/Register"
 import { action as loginAction } from "./pages/Login"
 import { loader as dashboardLoader } from "./pages/DashboardLayout"
@@ -7,6 +7,7 @@ import { action as addJobAction } from "./pages/AddJob"
 import { loader as allJobsLoader } from "./pages/AllJobs"
 import { loader as editJobLoader } from "./pages/EditJob"
 import { action as editJobAction } from "./pages/EditJob"
+import { action as deleteAction } from "./pages/DeleteJob"
 
 export const checkDefaultTheme = () => {
   const isDarkMode = localStorage.getItem('isDarkMode') === 'true'
@@ -51,6 +52,10 @@ const router = createBrowserRouter([
             element: <EditJob />,
             loader: editJobLoader,
             action: editJobAction
+          },
+          {
+            path: 'delete-job/:id',
+            action: deleteAction
           },
           {
             path: "all-jobs",
