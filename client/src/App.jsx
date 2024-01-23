@@ -45,6 +45,10 @@ const router = createBrowserRouter([
             action: addJobAction
           },
           {
+            path: 'edit-job/:id',
+            element: <EditJob />
+          },
+          {
             path: "all-jobs",
             element: <AllJobs />,
             loader: allJobsLoader
