@@ -5,9 +5,13 @@ import { JobsContainer, SearchContainer } from "../components"
 import { createContext, useContext } from "react"
 
 
-export const loader = async () => {
+export const loader = async ({ request }) => {
+  const params = Object.fromEntries([
+    ...new URL(request.url).searchParams.entries(),
+  ]);
+
   try {
-    const { data } = await customFetch.get('/jobs')
+    const { data } = await customFetch.get('/jobs', { params })
     return { data }
   } catch (error) {
     toast.error(error?.response?.data?.msg)
